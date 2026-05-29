@@ -1,3 +1,5 @@
+import { FOOD_IMAGES } from "./images";
+
 export type MenuServing = { size: string; price: number };
 
 export type FoodMenuItem = {
@@ -70,31 +72,36 @@ export const FEATURED_ITEMS = [
     menuId: "angwamo",
     defaultSize: "Medium",
     name: "Angwamo",
-    subtitle: "Rice with oil, egg & gizzard",
+    subtitle: "Rice with oil, egg & sides",
     note: "Our house favourite. Hearty, filling and full of flavour.",
     tag: "House favourite",
     priceLabel: "GH₵ 25 - 45",
-    image: "/jamis/hero_new.png",
+    image: FOOD_IMAGES.angwamo,
+    imageAlt:
+      "Angwamo oil rice bowl with plantain, sausage, omelette, and pepper sauces",
   },
   {
     menuId: "plantain",
     defaultSize: "Regular",
     name: "Plantain & Gizzard",
-    subtitle: "Popular combo plate",
-    note: "Fried plantain with seasoned gizzard. A customer favourite.",
+    subtitle: "Popular side combo",
+    note: "Sweet fried plantain. Pair with gizzard or Angwamo for a full plate.",
     tag: "Popular combo",
-    priceLabel: "From GH₵ 35",
-    image: "/jamis/flyer.png",
+    priceLabel: "From GH₵ 15",
+    image: FOOD_IMAGES.plantainGizzard,
+    imageAlt: "Golden fried ripe plantain slices with spice",
   },
   {
     menuId: "salad",
     defaultSize: "Regular",
     name: "Mixed Salad",
     subtitle: "Fresh & light",
-    note: "Crisp vegetables. Perfect alongside your main.",
+    note: "Crisp greens with tomato and cucumber. Perfect alongside your main.",
     tag: "Fresh",
     priceLabel: "GH₵ 12",
-    image: "/jamis/flyer.png",
+    image: FOOD_IMAGES.salad,
+    imageAlt:
+      "Fresh mixed salad with grilled chicken, lettuce, tomato, and cucumber",
   },
 ];
 

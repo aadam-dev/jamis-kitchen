@@ -4,15 +4,19 @@ import { useEffect, useState } from "react";
 import { SectionReveal } from "./components/SectionReveal";
 import { HeroBackground } from "./components/HeroBackground";
 import { JamisLogo } from "./components/JamisLogo";
+import { PoweredByAadam } from "./components/PoweredByAadam";
 import { MapEmbed, MAPS_LINK } from "./components/MapEmbed";
 import { CartButton } from "./components/cart/CartButton";
 import { MenuOrderSection } from "./components/cart/MenuOrderSection";
 import { useCart } from "./components/cart/CartProvider";
+import { FoodImage, GalleryFoodImage } from "./components/FoodImage";
+import { PickupLocationPanel } from "./components/PickupLocationPanel";
 import {
   FEATURED_ITEMS,
   getServing,
   fmtGHS,
 } from "@/lib/menu";
+import { KITCHEN_GALLERY } from "@/lib/images";
 import {
   LOCATION,
   TAGLINE,
@@ -23,6 +27,7 @@ import {
   PHONE_PRIMARY_TEL,
   PHONE_SECONDARY_TEL,
   WHATSAPP_INQUIRY,
+  WHATSAPP_ORDER,
   WHATSAPP_SECONDARY,
 } from "@/lib/business";
 import {
@@ -50,13 +55,6 @@ const EXPERIENCE_PILLARS = [
     title: "Fast delivery",
     body: "WhatsApp ordering with delivery available around Accra.",
   },
-];
-
-const GALLERY_ITEMS = [
-  { src: "/jamis/hero_new.png", alt: "Angwamo rice bowl with egg and gizzard" },
-  { src: "/jamis/flyer.png", alt: "Plantain and gizzard plate from Jami's Kitchen" },
-  { src: "/jamis/flyer.png", alt: "Fresh mixed salad bowl" },
-  { src: "/jamis/hero_new.png", alt: "Hearty Ghanaian meal spread" },
 ];
 
 function FeaturedAddButton({
@@ -173,8 +171,8 @@ export default function Home() {
           <span className="rounded-full border border-[var(--accent-bright)]/30 bg-[var(--accent)]/15 px-4 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--accent-bright)]">
             Nima · Accra
           </span>
-          <div className="hidden md:block">
-            <JamisLogo size={120} layout="stacked" />
+          <div className="hidden md:block" aria-hidden>
+            <JamisLogo size={120} layout="stacked" showWordmark={false} />
           </div>
           <h1 className="max-w-3xl text-balance font-serif text-4xl font-semibold tracking-tight drop-shadow-sm md:text-6xl">
             Jami&apos;s Kitchen
@@ -266,35 +264,8 @@ export default function Home() {
         </SectionReveal>
 
         <SectionReveal className="mb-20 md:mb-28" delay={0.1}>
-          <div className="grid gap-8 rounded-3xl border border-white/5 bg-gradient-to-r from-[var(--surface-light)] to-[var(--surface-dark-soft)] p-8 shadow-[var(--shadow-soft)] md:grid-cols-[1fr_1.4fr] md:p-10 items-center">
-            <div className="flex flex-col justify-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent-bright)] flex items-center gap-2">
-                <MapPin className="w-4 h-4" /> Our spot
-              </p>
-              <h2 className="mt-2 font-serif text-3xl font-semibold text-[var(--foreground)] md:text-4xl">
-                Find us in Nima
-              </h2>
-              <p className="mt-4 text-lg leading-relaxed text-[var(--muted)]">
-                We&apos;re at {LOCATION}. Stop by for a hot plate or order from the
-                menu and checkout via WhatsApp for delivery around Accra.
-              </p>
-              <a
-                href={MAPS}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-1 font-medium text-[var(--accent-bright)] hover:underline"
-              >
-                Open in Google Maps →
-              </a>
-            </div>
-            <div className="relative overflow-hidden rounded-[20px] shadow-[var(--shadow-dark)] ring-1 ring-white/10 group">
-              <img
-                src="/jamis/flyer.png"
-                alt="Jami's Kitchen promotional flyer with menu and contact details"
-                className="w-full object-cover h-64 md:h-[400px] transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-            </div>
+          <div className="rounded-3xl border border-white/5 bg-gradient-to-r from-[var(--surface-light)] to-[var(--surface-dark-soft)] p-8 shadow-[var(--shadow-soft)] md:p-10">
+            <PickupLocationPanel whatsappOrderHref={WHATSAPP_ORDER} />
           </div>
         </SectionReveal>
 
@@ -321,13 +292,16 @@ export default function Home() {
                 key={item.name}
                 className="group rounded-3xl border border-white/5 bg-[var(--card)] p-3 shadow-[var(--shadow-soft)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-dark)]"
               >
-                <div className="mb-4 overflow-hidden rounded-2xl relative">
-                  <img
+                <div className="mb-4 overflow-hidden rounded-2xl relative h-48">
+                  <FoodImage
                     src={item.image}
-                    alt={item.name}
-                    className="h-48 w-full object-cover transition duration-700 group-hover:scale-110"
+                    alt={item.imageAlt}
+                    className="h-full w-full"
+                    imageClassName="transition duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    priority={item.menuId === "angwamo"}
                   />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors pointer-events-none" />
                 </div>
                 <div className="px-3 pb-3">
                   <span className="inline-flex rounded-full bg-[var(--accent)]/10 px-3 py-1 text-xs font-semibold text-[var(--accent-bright)] border border-[var(--accent)]/20">
@@ -362,20 +336,20 @@ export default function Home() {
               <h2 className="mt-2 font-serif text-3xl font-semibold text-[var(--foreground)] md:text-4xl">
                 From our kitchen
               </h2>
+              <p className="mt-3 max-w-xl text-[var(--muted)]">
+                Real dishes we serve. Order from the menu and checkout on WhatsApp.
+              </p>
             </div>
           </div>
-          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {GALLERY_ITEMS.map((item, i) => (
-              <div
-                key={`${item.src}-${i}`}
-                className="overflow-hidden rounded-2xl border border-white/5 bg-[var(--card)] shadow-[var(--shadow-soft)]"
-              >
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  className="h-36 w-full object-cover transition duration-500 hover:scale-105 md:h-52"
-                />
-              </div>
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {KITCHEN_GALLERY.map((item, i) => (
+              <GalleryFoodImage
+                key={item.src}
+                src={item.src}
+                alt={item.alt}
+                label={item.label}
+                priority={i === 0}
+              />
             ))}
           </div>
         </SectionReveal>
@@ -474,8 +448,8 @@ export default function Home() {
                       Delivery
                     </h3>
                     <p className="mt-2 text-[var(--muted)]">
-                      Delivery available around Accra. Add items to cart and checkout
-                      on WhatsApp.
+                      Delivery available around Accra. Pickup at {LOCATION}. No
+                      dine-in shop yet. Order via the website cart or WhatsApp.
                     </p>
                   </div>
                 </div>
@@ -609,17 +583,20 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="mx-auto max-w-6xl mt-12 pt-8 border-t border-white/5 flex flex-wrap items-center justify-between gap-4">
+        <div className="mx-auto max-w-6xl mt-12 pt-8 border-t border-white/5 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <p className="text-sm text-[var(--muted)]">
             © {new Date().getFullYear()} Jami&apos;s Kitchen. All rights reserved.
           </p>
-          <button
-            type="button"
-            onClick={() => openCart("cart")}
-            className="text-sm text-[var(--accent-bright)] hover:underline flex items-center gap-2"
-          >
-            <ShoppingBag className="w-4 h-4" /> Order from cart
-          </button>
+          <div className="flex flex-col items-start gap-3 sm:items-end">
+            <button
+              type="button"
+              onClick={() => openCart("cart")}
+              className="text-sm text-[var(--accent-bright)] hover:underline flex items-center gap-2"
+            >
+              <ShoppingBag className="w-4 h-4" /> Order from cart
+            </button>
+            <PoweredByAadam />
+          </div>
         </div>
       </footer>
     </div>

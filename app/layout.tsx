@@ -38,7 +38,7 @@ const localBusinessJsonLd = {
   "@context": "https://schema.org",
   "@type": "Restaurant",
   name: "Jami's Kitchen",
-  image: "/jamis/flyer.png",
+  image: "/jamis/angwamo.png",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Nima Shell Filling Station (Free Pipe)",

@@ -36,3 +36,6 @@ yarn-error.log*
 # editor / local
 .cursor/
 *.log
+
+# local marketing & ops docs (not for the public repo)
+/docs/

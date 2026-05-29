@@ -12,6 +12,8 @@ type JamisLogoProps = {
   dark?: boolean;
   /** stacked = hero/footer, inline = nav */
   layout?: "stacked" | "inline" | "auto";
+  /** When false, show only the mark (monogram or logo image). Use on hero where the h1 carries the name. */
+  showWordmark?: boolean;
 };
 
 export function JamisLogo({
@@ -19,10 +21,12 @@ export function JamisLogo({
   size = 48,
   dark = false,
   layout = "auto",
+  showWordmark = true,
 }: JamisLogoProps) {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const resolvedLayout =
     layout === "auto" ? (size >= 80 ? "stacked" : "inline") : layout;
+  const scale = size / 48;
 
   useEffect(() => {
     let cancelled = false;
@@ -40,7 +44,7 @@ export function JamisLogo({
     return (
       <img
         src={logoUrl}
-        alt={BRAND_NAME}
+        alt={showWordmark ? BRAND_NAME : `${BRAND_NAME} logo`}
         width={size}
         height={size}
         className={`rounded-full bg-white object-contain p-1 shadow-[0_4px_20px_rgba(196,30,58,0.25)] ${className}`}
@@ -48,7 +52,17 @@ export function JamisLogo({
     );
   }
 
-  const scale = size / 48;
+  if (!showWordmark) {
+    return (
+      <span className={`inline-flex ${className}`} aria-hidden>
+        <BrandMonogram
+          scale={resolvedLayout === "stacked" ? scale * 1.35 : scale}
+          dark={dark}
+        />
+      </span>
+    );
+  }
+
   const jamisSize = Math.round(14 * scale);
   const kitchenSize = Math.round(10 * scale);
   const gap = Math.max(0, Math.round(2 * scale));

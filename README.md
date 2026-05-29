@@ -113,3 +113,5 @@ Business phone numbers on the site are public contact details, not secrets.
 ## License
 
 Private project for Jami's Kitchen. All rights reserved unless otherwise agreed with the business owner.
+
+Local marketing setup guides live in `/docs/` (gitignored, not in the public repo).
